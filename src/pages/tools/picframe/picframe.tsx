@@ -192,10 +192,10 @@ export default function PicFrame() {
       let url = '';
       switch (fileExif.Make) {
         case 'NIKON CORPORATION':
-          url = '/public/nikon-logo.svg';
+          url = '/nikon-logo.svg';
           break;
       }
-      fabric.loadSVGFromURL('/public/nikon-logo.svg', (objects, options) => {
+      fabric.loadSVGFromURL(url, (objects, options) => {
         const svgInstance = fabric.util.groupSVGElements(objects, options);
         svgInstance.left =
           borderGroup?.group?.left! + borderConfig.logo.x / scale;
