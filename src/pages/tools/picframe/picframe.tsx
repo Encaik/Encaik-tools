@@ -1,18 +1,22 @@
 import { RcFile } from 'antd/es/upload';
 import EXIF from 'exif-js';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BorderConfig, BorderConfigItem, ExifData } from './model';
 import ImgUpload from './components/img-upload';
 import { fabric } from 'fabric';
 import { Canvas, Group } from 'fabric/fabric-impl';
 import BorderConfigPanel from './components/border-config-panel';
 import { imgReader } from './canvas';
+import { Button } from 'antd';
+import { SaveOutlined } from '@ant-design/icons';
 
 export default function PicFrame() {
   const [fileInfo, setFileInfo] = useState<HTMLImageElement>();
   const [fileExif, setFileExif] = useState<ExifData>();
   const [canvas, setCanvas] = useState<Canvas | null>(null);
   const [borderGroup, setBorderGroup] = useState<Group | null>(null);
+  const [scale, setScale] = useState<number>(1);
+  const canvasRef = useRef<HTMLDivElement>(null);
 
   // 初始化画布
   useEffect(() => {
@@ -27,6 +31,35 @@ export default function PicFrame() {
       }),
     );
   }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (!canvas) return;
+      const canvasWidth = canvasRef.current?.clientWidth! - 32;
+      const canvasHeight = canvasRef.current?.clientHeight! - 32;
+      canvas.setHeight(canvasHeight);
+      canvas.setWidth(canvasWidth);
+      const [dist] = canvas?.getObjects();
+      const scale = Math.min(
+        canvasWidth / dist.width!,
+        canvasHeight / dist.height!,
+      );
+      canvas.setZoom(scale);
+      const left = (canvasWidth / scale - dist.width!) / 2;
+      const top = (canvasHeight / scale - dist.height!) / 2;
+      dist.set({
+        left,
+        top,
+      });
+      setScale(() => scale);
+      canvas?.renderAll();
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [canvas]);
 
   // 上传图片
   const onImgUpload = (file: RcFile) => {
@@ -87,6 +120,7 @@ export default function PicFrame() {
       getExifData($el);
       return border;
     });
+    setScale(() => scale);
     canvas.renderAll();
   };
 
@@ -147,7 +181,6 @@ export default function PicFrame() {
   });
 
   const drawText = (str: string, config: BorderConfigItem, group: Group) => {
-    const scale = canvas!.getZoom();
     return new fabric.Text(str, {
       left: group.group?.left! + config.x / scale,
       top: fileInfo?.naturalHeight! + config.y / scale,
@@ -160,8 +193,8 @@ export default function PicFrame() {
 
   // 使用exif数据绘制文本
   useEffect(() => {
+    console.log('重绘文本');
     if (!fileExif || !canvas) return;
-    const scale = canvas.getZoom();
     if (borderConfig.model.show) {
       borderGroup!.addWithUpdate(
         drawText(fileExif.Model || '', borderConfig.model, borderGroup!),
@@ -192,7 +225,7 @@ export default function PicFrame() {
       let url = '';
       switch (fileExif.Make) {
         case 'NIKON CORPORATION':
-          url = '/nikon-logo.svg';
+          url = '/tools/picframe/nikon-logo.svg';
           break;
       }
       fabric.loadSVGFromURL(url, (objects, options) => {
@@ -215,19 +248,41 @@ export default function PicFrame() {
         }
       });
     };
-  }, [fileExif, borderConfig]);
+  }, [fileExif, borderConfig, scale]);
+
+  const onSaveClick = () => {
+    if (!canvas) return;
+    const [dist] = canvas.getObjects();
+    const dataURL = dist.toDataURL({
+      format: 'jpeg',
+      multiplier: 1,
+    });
+    const link = document.createElement('a');
+    link.href = dataURL;
+    link.download = 'canvas.jpg';
+    link.click();
+  };
 
   return (
-    <div className="flex flex-col">
-      <div className="mb-4 flex flex-row items-center gap-4">
+    <div className="flex flex-col gap-4 h-full">
+      <div className="flex flex-row items-center gap-4">
         <span className="text-2xl font-bold">边框工具</span>
         <ImgUpload onChange={onImgUpload} />
+        <Button type="primary" icon={<SaveOutlined />} onClick={onSaveClick}>
+          保存
+        </Button>
       </div>
-      <div className="flex flex-auto flex-row gap-4">
-        <div className="flex-1 p-4 border border-gray-300 bg-slate-200 rounded-lg flex flex-col items-center justify-center">
+      <div
+        className="flex flex-row gap-4"
+        style={{ height: 'calc(100% - 32px - 1rem)' }}
+      >
+        <div
+          ref={canvasRef}
+          className="p-4 border border-gray-300 bg-slate-200 overflow-hidden flex-auto rounded-lg flex flex-col items-center justify-center"
+        >
           <canvas id="pic-container" className="w-full h-full"></canvas>
         </div>
-        <div className="w-72 flex-initial overflow-auto">
+        <div className="w-72 min-w-72 overflow-auto pr-2">
           <BorderConfigPanel
             borderConfig={borderConfig}
             setBorderConfig={setBorderConfig}

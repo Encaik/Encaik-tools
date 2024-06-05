@@ -1,3 +1,34 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* 通用滚动条样式 */
+::-webkit-scrollbar {
+  /* 用于Webkit内核的浏览器，如Chrome和Safari */
+  width: 8px; /* 滚动条宽度 */
+  height: 8px; /* 滚动条高度，对于垂直滚动条 */
+}
+
+::-webkit-scrollbar-track {
+  /* 滚动条轨道 */
+  background-color: rgba(0, 0, 0, 0.1); /* 轨道颜色，这里使用透明度较低的黑色 */
+  border-radius: 4px; /* 轨道圆角 */
+}
+
+::-webkit-scrollbar-thumb {
+  /* 滚动条滑块 */
+  background-color: rgba(0, 0, 0, 0.3); /* 滑块颜色，同样使用透明度较低的黑色 */
+  border-radius: 4px; /* 滑块圆角 */
+  transition: background-color 0.2s ease; /* 平滑过渡效果 */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  /* 鼠标悬停时的滑块颜色 */
+  background-color: rgba(0, 0, 0, 0.5); /* 更深的颜色以指示交互 */
+}
+
+/* 对于Firefox浏览器 */
+scrollbar-width: thin; /* 设置滚动条宽度为细 */
+scrollbar-color: rgba(0, 0, 0, 0.3) rgba(0, 0, 0, 0.1); /* 分别设置滚动条滑块和轨道的颜色 */
+
+/* 注意：IE浏览器不支持自定义滚动条样式，因此无需编写特定代码 */
