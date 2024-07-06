@@ -5,7 +5,7 @@ import Title from 'antd/es/typography/Title';
 import { useNavigate } from 'react-router-dom';
 import { SendOutlined } from '@ant-design/icons';
 
-export default function Home() {
+export default function Hwebgpuome() {
   const navigate = useNavigate();
   const data = [
     {

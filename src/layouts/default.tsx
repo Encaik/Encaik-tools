@@ -6,6 +6,7 @@ import {
   ProductFilled,
   BookFilled,
   CameraFilled,
+  ExperimentFilled,
 } from '@ant-design/icons';
 
 export default function DefaultLayout() {
@@ -24,6 +25,11 @@ export default function DefaultLayout() {
           key: '/tools/picframe',
           icon: <CameraFilled />,
           label: '照片边框',
+        },
+        {
+          key: '/tools/webgpu',
+          icon: <ExperimentFilled />,
+          label: 'WebGpu',
         },
       ],
     },

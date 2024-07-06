@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import Home from '../pages/home';
 import DefaultLayout from '../layouts/default';
 import PicFrame from '../pages/tools/picframe/picframe';
+import { Webgpu } from '../pages/tools/webgpu/webgpu';
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
           {
             path: 'picframe',
             element: <PicFrame />,
+          },
+          {
+            path: 'webgpu',
+            element: <Webgpu />,
           },
         ],
       },

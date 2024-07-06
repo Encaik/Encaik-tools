@@ -699,6 +699,11 @@
   dependencies:
     "@swc/core" "^1.5.7"
 
+"@webgpu/types@^0.1.43":
+  version "0.1.43"
+  resolved "https://registry.npmjs.org/@webgpu/types/-/types-0.1.43.tgz#ae8f4f0ed0c2fe624a95b1cd84eea82a6f14e7ea"
+  integrity sha512-HoP+d+m+Kuq8CsE63BZ3+BYBKAemrqbHUNrCalxrUju5XW+q/094Q3oeIa+2pTraEbO8ckJmGpibzyGT4OV4YQ==
+
 abab@^2.0.5, abab@^2.0.6:
   version "2.0.6"
   resolved "https://registry.npmjs.org/abab/-/abab-2.0.6.tgz#41b80f2c871d19686216b82309231cfd3cb3d291"
