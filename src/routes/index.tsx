@@ -3,6 +3,8 @@ import Home from '../pages/home';
 import DefaultLayout from '../layouts/default';
 import PicFrame from '../pages/tools/picframe/picframe';
 import { Webgpu } from '../pages/tools/webgpu/webgpu';
+import Harmonica from '../pages/tools/harmonica/harmonica';
+import SimpleNotation from '../pages/tools/simple-notation/simple-notation';
 
 const router = createBrowserRouter([
   {
@@ -23,6 +25,14 @@ const router = createBrowserRouter([
           {
             path: 'webgpu',
             element: <Webgpu />,
+          },
+          {
+            path: 'harmonica',
+            element: <Harmonica />,
+          },
+          {
+            path: 'simple-notation',
+            element: <SimpleNotation />,
           },
         ],
       },

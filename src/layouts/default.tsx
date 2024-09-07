@@ -7,6 +7,8 @@ import {
   BookFilled,
   CameraFilled,
   ExperimentFilled,
+  SignatureFilled,
+  CustomerServiceFilled,
 } from '@ant-design/icons';
 
 export default function DefaultLayout() {
@@ -25,6 +27,16 @@ export default function DefaultLayout() {
           key: '/tools/picframe',
           icon: <CameraFilled />,
           label: '照片边框',
+        },
+        {
+          key: '/tools/simple-notation',
+          icon: <CustomerServiceFilled />,
+          label: '简谱渲染',
+        },
+        {
+          key: '/tools/harmonica',
+          icon: <SignatureFilled />,
+          label: '口琴谱（施工中）',
         },
         {
           key: '/tools/webgpu',
