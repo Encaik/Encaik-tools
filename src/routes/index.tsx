@@ -2,7 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import Home from '../pages/home';
 import DefaultLayout from '../layouts/default';
 import PicFrame from '../pages/tools/picframe/picframe';
-import { Webgpu } from '../pages/tools/webgpu/webgpu';
+import Webgpu from '../pages/tools/webgpu/webgpu';
 import Harmonica from '../pages/tools/harmonica/harmonica';
 import SimpleNotation from '../pages/tools/simple-notation/simple-notation';
 

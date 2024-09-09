@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Renderer, Stave } from 'vexflow';
 
-export default function ScoreRender(props: { textScore: string }) {
+export default function ScoreRender(_: { textScore: string }) {
   useEffect(() => {
     const div = document.getElementById('score-container') as HTMLDivElement;
     if (!div) return;

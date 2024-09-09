@@ -9,7 +9,7 @@ export function SnOption({
   options: SNData;
   setOptions: (options: SNData) => void;
 }) {
-  const onValuesChange = (changedValues: any, allValues: any) => {
+  const onValuesChange = (_: any, allValues: any) => {
     setOptions({ ...options, info: allValues });
   };
 

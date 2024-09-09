@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import useWebGPU from './useWebgpu';
 
-export function Webgpu() {
+export default function Webgpu() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const { adapter, device, canvas, context, format } = useWebGPU(
     canvasRef.current,
