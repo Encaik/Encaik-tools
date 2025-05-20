@@ -1,21 +1,54 @@
-import { Button, Card, Divider, List, Typography } from 'antd';
+import React from 'react';
+import { Button, Card, Divider, List, Typography, Tooltip } from 'antd';
 import Meta from 'antd/es/card/Meta';
 import Paragraph from 'antd/es/typography/Paragraph';
 import Title from 'antd/es/typography/Title';
 import { useNavigate } from 'react-router-dom';
-import { SendOutlined } from '@ant-design/icons';
+import { SendOutlined, LinkOutlined } from '@ant-design/icons';
 
-export default function Hwebgpuome() {
+const DEFAULT_IMG = 'https://img.shields.io/badge/Encaik-Tools-blue?style=flat-square';
+
+const tools = [
+  {
+    title: '照片边框',
+    link: '/tools/picframe',
+    img: '/tools-card/picframe.png',
+    description:
+      '为相机照片添加精致边框和水印，自动生成相机型号、拍摄参数等信息，彰显摄影师风格与技术细节。',
+    isExternal: false,
+  },
+  {
+    title: '简谱编辑工具',
+    link: 'https://simple-notation.vercel.app/',
+    img: '',
+    description: '在线简谱编辑与渲染，支持多种乐谱格式，适合音乐爱好者和教师。',
+    isExternal: true,
+  },
+  {
+    title: '口琴谱（施工中）',
+    link: '/tools/harmonica',
+    img: '',
+    description: '口琴谱生成与渲染工具，助力口琴学习与创作。',
+    isExternal: false,
+  },
+  {
+    title: 'WebGpu',
+    link: '/tools/webgpu',
+    img: '',
+    description: 'WebGPU 图形渲染实验工具，探索前沿 Web 图形技术。',
+    isExternal: false,
+  },
+  {
+    title: '博客',
+    link: 'https://encaik.top/',
+    img: '',
+    description: '作者博客，记录开发心得与技术分享。',
+    isExternal: true,
+  },
+];
+
+export default function Home() {
   const navigate = useNavigate();
-  const data = [
-    {
-      title: '照片边框',
-      link: '/tools/picframe',
-      img: '/tools-card/picframe.png',
-      description:
-        '一款专为摄影爱好者设计的创意小工具，它不仅能够为你的相机照片添加精致边框，还能自动生成包含相机型号、拍摄参数等详细信息的水印，让你的每一张作品都讲述一个完整的故事，彰显摄影师的独特风格与技术细节。',
-    },
-  ];
 
   return (
     <div className="container mx-auto px-24 flex flex-col items-center justify-center">
@@ -23,12 +56,9 @@ export default function Hwebgpuome() {
       <Divider>简介</Divider>
       <Typography>
         <Title level={4}>🚀 探索技术边界，释放创新火花 🚀</Title>
-
         <Paragraph>
-          欢迎来到Encaik
-          Tools——一个汇聚独特与实用开发小工具的在线平台，专为那些寻求新鲜体验和乐趣的创新者们设计。在这里，你会发现一系列精心制作的工具，它们旨在为你的日常开发工作增添一抹别样的色彩，让技术不再枯燥无味。
+          欢迎来到Encaik Tools——一个汇聚独特与实用开发小工具的在线平台，专为那些寻求新鲜体验和乐趣的创新者们设计。在这里，你会发现一系列精心制作的工具，它们旨在为你的日常开发工作增添一抹别样的色彩，让技术不再枯燥无味。
         </Paragraph>
-
         <Title level={5}>🌈 特色功能：</Title>
         <Paragraph>
           精选工具集：集合了各种用途的开发辅助工具，覆盖多个领域，让你在尝试与整活中体验技术的魅力。
@@ -58,22 +88,68 @@ export default function Hwebgpuome() {
           xl: 4,
           xxl: 3,
         }}
-        dataSource={data}
+        dataSource={tools}
         renderItem={(item) => (
-          <List.Item>
+          <List.Item key={item.title}>
             <Card
-              cover={<img alt="img" src={item.img} />}
-              actions={[
-                <Button
-                  type="primary"
-                  icon={<SendOutlined />}
-                  onClick={() => navigate(item.link)}
+              className="shadow-lg hover:shadow-2xl transition-shadow duration-300"
+              style={{ height: 400, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
+              cover={
+                <div
+                  style={{
+                    background: '#f0f2f5',
+                    height: 180,
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderTopLeftRadius: 8,
+                    borderTopRightRadius: 8,
+                    overflow: 'hidden',
+                  }}
                 >
-                  立即使用
-                </Button>,
+                  <img
+                    alt="img"
+                    src={item.img || DEFAULT_IMG}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'contain',
+                      filter: item.img ? undefined : 'grayscale(1)',
+                      opacity: item.img ? 1 : 0.7,
+                      background: 'transparent',
+                      display: 'block',
+                    }}
+                  />
+                </div>
+              }
+              actions={[
+                <Tooltip title={item.isExternal ? '外部链接，新开页面' : '立即使用'} key="action">
+                  <Button
+                    type="primary"
+                    icon={item.isExternal ? <LinkOutlined /> : <SendOutlined />}
+                    onClick={() => {
+                      if (item.isExternal) {
+                        window.open(item.link, '_blank');
+                      } else {
+                        navigate(item.link);
+                      }
+                    }}
+                  >
+                    立即使用
+                  </Button>
+                </Tooltip>,
               ]}
             >
-              <Meta title={item.title} description={item.description} />
+              <Meta
+                title={
+                  <span>
+                    {item.title}
+                    {item.isExternal && <LinkOutlined style={{ marginLeft: 6, fontSize: 14, color: '#1677ff' }} />}
+                  </span>
+                }
+                description={item.description}
+              />
             </Card>
           </List.Item>
         )}

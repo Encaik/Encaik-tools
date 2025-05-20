@@ -3461,11 +3461,6 @@ simple-get@^3.0.3:
     once "^1.3.1"
     simple-concat "^1.0.0"
 
-simple-notation@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.npmjs.org/simple-notation/-/simple-notation-1.0.6.tgz#ca315e6cd11ac904924f0deed54f3604d726ed80"
-  integrity sha512-S2y1HeJtzNVQtvl7au9CuTb5wabWv00ew61+rg/6Pi/+oYd4SmG+wzaHdX0GAAruBWWdBa7bmok+h+uNvYV8jA==
-
 slash@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npmjs.org/slash/-/slash-3.0.0.tgz#6539be870c165adbd5240220dbe361f1bc4d4634"

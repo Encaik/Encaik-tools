@@ -21,7 +21,6 @@
     "react-dom": "^18.2.0",
     "react-router": "^6.23.1",
     "react-router-dom": "^6.23.1",
-    "simple-notation": "^1.0.6",
     "vexflow": "^4.2.5"
   },
   "devDependencies": {

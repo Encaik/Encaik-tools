@@ -1,60 +1,64 @@
+import React from 'react';
 import { Layout, Menu, MenuProps } from 'antd';
+import type { ItemType } from 'antd/es/menu/interface';
 import { Content, Header } from 'antd/es/layout/layout';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import {
-  HomeFilled,
-  ProductFilled,
-  BookFilled,
-  CameraFilled,
-  ExperimentFilled,
-  SignatureFilled,
-  CustomerServiceFilled,
-} from '@ant-design/icons';
+import routesConfig from '../routes/config';
+import { LinkOutlined } from '@ant-design/icons';
+
+interface MenuConfig {
+  path: string;
+  label?: string;
+  icon?: React.ReactNode;
+  children?: MenuConfig[];
+  isExternal?: boolean;
+}
+
+/**
+ * 递归将 routesConfig 转换为 antd Menu 的 items
+ */
+function mapMenuItems(config: MenuConfig[], parentPath = ''): ItemType[] {
+  return config.map((item) => {
+    // 外链
+    if (item.path.startsWith('http')) {
+      return {
+        key: item.path,
+        icon: item.icon,
+        // 外链加上小箭头标志
+        label: (
+          <span>
+            {item.label}
+            {item.isExternal && (
+              <LinkOutlined style={{ marginLeft: 4, fontSize: 12 }} />
+            )}
+          </span>
+        ),
+      };
+    }
+    // 内部路由
+    const fullPath = parentPath
+      ? `${parentPath.replace(/\/$/, '')}/${item.path.replace(/^\//, '')}`
+      : item.path;
+    return {
+      key: fullPath,
+      icon: item.icon,
+      label: item.label,
+      children: item.children
+        ? mapMenuItems(item.children, fullPath)
+        : undefined,
+    };
+  });
+}
 
 export default function DefaultLayout() {
-  const menu = [
-    {
-      key: '/',
-      icon: <HomeFilled />,
-      label: '首页',
-    },
-    {
-      key: '/tools',
-      icon: <ProductFilled />,
-      label: '工具',
-      children: [
-        {
-          key: '/tools/picframe',
-          icon: <CameraFilled />,
-          label: '照片边框',
-        },
-        {
-          key: '/tools/simple-notation',
-          icon: <CustomerServiceFilled />,
-          label: '简谱渲染',
-        },
-        {
-          key: '/tools/harmonica',
-          icon: <SignatureFilled />,
-          label: '口琴谱（施工中）',
-        },
-        {
-          key: '/tools/webgpu',
-          icon: <ExperimentFilled />,
-          label: 'WebGpu',
-        },
-      ],
-    },
-    {
-      key: 'https://encaik.top/',
-      icon: <BookFilled />,
-      label: '博客',
-    },
-  ];
-
+  const menu = mapMenuItems(routesConfig as MenuConfig[]);
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
+  /**
+   * 菜单点击事件，支持外链和内部跳转
+   * @param {import('antd').MenuProps['onClick']} e
+   */
   const onClick: MenuProps['onClick'] = (e) => {
     if (e.key.startsWith('http')) {
       window.open(e.key, '_blank');
