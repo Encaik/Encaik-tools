@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   HomeFilled,
   ProductFilled,
@@ -11,6 +12,7 @@ import Home from '../pages/home';
 import PicFrame from '../pages/tools/picframe/picframe';
 import Webgpu from '../pages/tools/webgpu/webgpu';
 import Harmonica from '../pages/tools/harmonica/harmonica';
+import PhotoCurve from '../pages/tools/photo-curve/photo-curve';
 
 /**
  * 路由和菜单的统一配置
@@ -51,6 +53,12 @@ const routesConfig = [
         label: 'WebGpu',
         icon: <ExperimentFilled />,
         element: <Webgpu />,
+      },
+      {
+        path: 'photo-curve',
+        label: '照片调色',
+        icon: <CameraFilled />,
+        element: <PhotoCurve />,
       },
     ],
   },

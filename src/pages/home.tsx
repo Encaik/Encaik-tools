@@ -45,6 +45,13 @@ const tools = [
     description: '作者博客，记录开发心得与技术分享。',
     isExternal: true,
   },
+  {
+    title: '照片调色',
+    link: '/tools/photo-curve',
+    img: '',
+    description: '支持上传照片，左侧渲染，右侧可用风格曲线调整全通道和RGB通道色彩。',
+    isExternal: false,
+  },
 ];
 
 export default function Home() {
